@@ -12,7 +12,7 @@ module OmniAuth
       }
       option :scope, 'public'
 
-      uid { raw_info['uuid'] }
+      uid { raw_info['id'] }
 
       extra do
         { raw_info: raw_info }
@@ -20,15 +20,13 @@ module OmniAuth
 
       info do
         {
-          email: raw_info['email'],
+          email:      raw_info['email'],
           first_name: raw_info['first_name'],
-          # https://github.com/omniauth/omniauth/wiki/Auth-Hash-Schema
-          # A URL representing a profile image of the authenticating user. Where possible, should be specified to a square, roughly 50x50 pixel image
-          image: raw_info['full_thumbnail_url'],
-          last_name: raw_info['last_name'],
-          location: [raw_info['city'], raw_info['state']].compact.join(', '),
-          name: "#{raw_info['first_name']} #{raw_info['last_name']}",
-          nickname: raw_info['username'],
+          image:      raw_info['full_square_thumbnail_url'],
+          last_name:  raw_info['last_name'],
+          location:   [raw_info['city'], raw_info['state']].compact.join(', '),
+          name:       "#{raw_info['first_name']} #{raw_info['last_name']}",
+          nickname:   raw_info['username'],
         }
       end
 
