@@ -5,47 +5,36 @@ module OmniAuth
     class Bikeroar < OmniAuth::Strategies::OAuth2
       option :name, 'bikeroar'
       option :client_options, {
-        :site => 'https://wwww.bikeroar.com',
-        :authorize_path => '/oauth/new',
-        :token_path => '/oauth/token'
+        :site          => 'http://wwww.bikeroar.com',
+        :authorize_url => 'http://wwww.bikeroar.com/oauth/authorize',
+        :token_url     => 'http://wwww.bikeroar.com/oauth/token',
+        :callback_path => "/auth/bikeroar/callback"
       }
       option :scope, 'public'
 
-      def authorize_params
-        super
-      end
-
-      def request_phase
-        super
-      end
-
-      def callback_phase
-        super
-      end
-
-      uid { member['uuid'] }
+      uid { raw_info['uuid'] }
 
       extra do
-        { raw_info: member }
+        { raw_info: raw_info }
       end
 
       info do
         {
-          email: member['email'],
-          first_name: member['first_name'],
+          email: raw_info['email'],
+          first_name: raw_info['first_name'],
           # https://github.com/omniauth/omniauth/wiki/Auth-Hash-Schema
           # A URL representing a profile image of the authenticating user. Where possible, should be specified to a square, roughly 50x50 pixel image
-          image: member['avatar_url'],
-          last_name: member['last_name'],
-          location: "#{member['city']}, #{member['state']}}",
-          name: "#{member['first_name']} #{member['last_name']}",
-          nickname: member['username'],
+          image: raw_info['full_thumbnail_url'],
+          last_name: raw_info['last_name'],
+          location: [raw_info['city'], raw_info['state']].compact.join(', '),
+          name: "#{raw_info['first_name']} #{raw_info['last_name']}",
+          nickname: raw_info['username'],
         }
       end
 
       def raw_info
         access_token.options[:parse] = :json
-        @raw_info ||= access_token.get('/member', { access_token: access_token.token }).parsed
+        @raw_info ||= access_token.get('/api/v1/members/me', { access_token: access_token.token }).parsed
       end
     end
   end

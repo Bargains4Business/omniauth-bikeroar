@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+# A sample Gemfile
+source "https://rubygems.org"
+
+gem "sinatra"
+gem "pry"
+gem "httplog"
+gem "omniauth"
+gem "omniauth-bikeroar", path: '../../omniauth-bikeroar'

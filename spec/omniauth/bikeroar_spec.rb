@@ -12,15 +12,15 @@ describe OmniAuth::Strategies::Bikeroar do
 
   describe '#client' do
     it 'should have the correct bikeroar site' do
-      expect(subject.client.site).to eq("https://wwww.bikeroar.com")
+      expect(subject.client.site).to eq("http://wwww.bikeroar.com")
     end
 
     it 'should have the correct authorization url' do
-      expect(subject.client.options[:authorize_path]).to eq("/oauth/new")
+      expect(subject.client.options[:authorize_url]).to eq("http://wwww.bikeroar.com/oauth/authorize")
     end
 
     it 'should have the correct token url' do
-      expect(subject.client.options[:token_path]).to eq('/oauth/token')
+      expect(subject.client.options[:token_url]).to eq('http://wwww.bikeroar.com/oauth/token')
     end
   end
 
